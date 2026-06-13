@@ -122,3 +122,4 @@ class LoggerUtils:
         archive_file_path = os.path.join(log_folder, archive_file_name)
 
         os.rename(self.log_file_path, archive_file_path)
+        self.log_file_path = None
