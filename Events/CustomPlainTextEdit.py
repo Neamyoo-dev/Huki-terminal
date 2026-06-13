@@ -1,14 +1,19 @@
+from __future__ import annotations
+
 from PyQt5 import QtWidgets, QtGui
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSignal
 
 from Value.data import app_state
 
 
 class CustomPlainTextEdit(QtWidgets.QPlainTextEdit):
+    command_entered = pyqtSignal(str)
+    error_occurred = pyqtSignal(object)
+
     now_plain = None
     welcome_length = 94
 
-    def keyPressEvent(self, event):
+    def keyPressEvent(self, event) -> None:
         try:
             cursor = self.textCursor()
             cursor_pos = cursor.position()
@@ -38,7 +43,7 @@ class CustomPlainTextEdit(QtWidgets.QPlainTextEdit):
                 last_newline = all_text.rfind('\n')
                 current_line = all_text[last_newline + 1:] if last_newline >= 0 else all_text
                 command_text = current_line.replace(app_state.entry, "", 1).strip()
-                self.parent().parent().parent().process_command(command_text)
+                self.command_entered.emit(command_text)
 
                 output_text = self.toPlainText()
                 output_length = len(output_text)
@@ -52,4 +57,4 @@ class CustomPlainTextEdit(QtWidgets.QPlainTextEdit):
             else:
                 super().keyPressEvent(event)
         except Exception as e:
-            self.parent().parent().parent().error(str(e) + "\n")
+            self.error_occurred.emit(str(e) + "\n")
