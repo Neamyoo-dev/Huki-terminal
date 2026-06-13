@@ -3,17 +3,19 @@ from __future__ import annotations
 import re
 import sys
 
-from PyQt5.QtCore import QLocale
+from PyQt5.QtCore import QLocale, Qt
+from PyQt5.QtCore import QCoreApplication
 from PyQt5.QtWidgets import QMainWindow, QApplication
 
-from Events.Event import *
+from Events.CustomPlainTextEdit import CustomPlainTextEdit
+from Events.Event import EventMixin
 from Value.constants import *
 from Value.data import COMMANDS, Config, app_state
 from plugin_loader import PluginLoader
 from ui import Ui_MainWindow
 from utils.Logger_utils import *
-from utils.Utils import *
-from utils.thread_utils import *
+from utils.Utils import in_path
+from utils.thread_utils import ThreadUtils
 
 app_state.path = os.path.splitdrive(os.path.abspath(os.sep))[
            0] + '\\' if os.name == 'nt' else os.path.abspath(os.sep)
@@ -21,17 +23,17 @@ os.chdir(app_state.path)
 app_state.entry = f"{app_state.path}> "
 
 
-def _is_system_command(command):
+def _is_system_command(command: str) -> bool:
     return in_path(command) or os.path.isfile(os.path.join(app_state.path, command))
 
 
-class MainForm(QMainWindow, Ui_MainWindow):
+class MainForm(QMainWindow, Ui_MainWindow, EventMixin):
     name = Config.name
     version = Config.version
     welcome = f"{name} {version}\n{ \
         LICENSE}\nType 'help' to view help information.\n"
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None) -> None:
         super(MainForm, self).__init__(parent)
         self.log_file_path = None
         self.args = None
@@ -56,37 +58,39 @@ class MainForm(QMainWindow, Ui_MainWindow):
                                      "border-radius:13px;}")
         self.text_edit.setObjectName("plainTextEdit")
 
-        Event.print(self, self.welcome)
-        Event.print(self, app_state.entry, end="")
+        self.text_edit.command_entered.connect(self.process_command)
+        self.text_edit.error_occurred.connect(self.error)
+
+        self.print(self.welcome)
+        self.print(app_state.entry, end="")
 
         self.text_edit.selectionChanged.connect(self.on_selection_changed)
 
         self.plugin_loader = PluginLoader(self)
         self.plugin_loader.load_plugins()
 
-    def closeEvent(self, event):
+    def closeEvent(self, event) -> None:
         LoggerUtils.save_log(self, "终端关闭")
         event.accept()
 
-    def register_command(self, cmd_name, cmd_func):
-        """注册新命令"""
+    def register_command(self, cmd_name: str, cmd_func) -> None:
         COMMANDS[cmd_name] = cmd_func
 
-    def process_command(self, line_text):
+    def process_command(self, line_text: str) -> None:
         if not line_text:
-            Event.print(self, app_state.entry, end="")
+            self.print(app_state.entry, end="")
             return
 
         parts = line_text.split('>')
         command_part = parts[-1].strip()
 
         if not command_part:
-            Event.print(self, app_state.entry, end="")
+            self.print(app_state.entry, end="")
             return
 
         command_parts = command_part.split()
         if not command_parts:
-            Event.print(self, app_state.entry, end="")
+            self.print(app_state.entry, end="")
             return
 
         command = command_parts[0]
@@ -100,14 +104,14 @@ class MainForm(QMainWindow, Ui_MainWindow):
                 self._execute_system_command(line_text)
             else:
                 LoggerUtils.save_log(self, f"Command not found: {command}")
-                Event.error(self, [CMD_NOT_DEFINED, COLON, command])
+                self.error([CMD_NOT_DEFINED, COLON, command])
         except (KeyboardInterrupt, EOFError):
-            Event.error(self, ["\n", USET_ABORT])
+            self.error(["\n", USET_ABORT])
             sys.exit()
         finally:
-            Event.print(self, app_state.entry, end="")
+            self.print(app_state.entry, end="")
 
-    def _execute_command(self, command, args):
+    def _execute_command(self, command: str, args: list[str]) -> None:
         method_name = COMMANDS[command]
         if method_name == "exit":
             sys.exit()
@@ -116,46 +120,65 @@ class MainForm(QMainWindow, Ui_MainWindow):
             if callable(method_name):
                 output = method_name(*args)
                 if output:
-                    Event.print(self, output)
+                    self.print(output)
             else:
                 method = getattr(self, method_name)
                 output = method(*args)
                 if output:
-                    Event.print(self, output)
+                    self.print(output)
         except NameError:
-            Event.error(self, [CMD_NOT_FOUND, COLON, command])
+            self.error([CMD_NOT_FOUND, COLON, command])
         except AttributeError:
-            Event.error(self, [CMD_NOT_FOUND, COLON, command])
+            self.error([CMD_NOT_FOUND, COLON, command])
         except TypeError as e:
             error_msg = str(e)
             if "positional argument" in error_msg:
                 if "missing" in error_msg:
-                    Event.error(self, [command, COLON, MISS_ARG])
+                    self.error([command, COLON, MISS_ARG])
                 elif "takes" in error_msg:
-                    Event.error(self, [command, COLON, LARGE_ARG])
+                    self.error([command, COLON, LARGE_ARG])
             else:
-                Event.error(self, [command, COLON, error_msg])
+                self.error([command, COLON, error_msg])
         except Exception as e:
             LoggerUtils.save_log(self, f"Command execution error: {str(e)}")
-            Event.error(self, [str(e)])
+            self.error([str(e)])
 
-    def mouseReleaseEvent(self, event):
+    def _execute_system_command(self, raw_line: str) -> None:
+        import subprocess
+        try:
+            result = subprocess.run(raw_line, shell=True, capture_output=True, text=True)
+            output = result.stdout + result.stderr
+            if output and output.strip():
+                self.print(output.strip())
+        except Exception as e:
+            self.error([str(e)])
+
+    def mouseReleaseEvent(self, event) -> None:
         self.start_x = None
         self.start_y = None
 
-    def mousePressEvent(self, event):
+    def mousePressEvent(self, event) -> None:
         if event.button() == Qt.LeftButton:
             super(MainForm, self).mousePressEvent(event)
             self.start_x = event.x()
             self.start_y = event.y()
 
-    def mouseMoveEvent(self, event):
+    def mouseMoveEvent(self, event) -> None:
         super(MainForm, self).mouseMoveEvent(event)
         dis_x = event.x() - self.start_x
         dis_y = event.y() - self.start_y
         self.move(self.x() + dis_x, self.y() + dis_y)
 
-    def help(self):
+    def resizeEvent(self, event) -> None:
+        super().resizeEvent(event)
+        frame_margin = 10
+        title_bar_height = 51
+        frame_w = self.width() - 2 * frame_margin
+        frame_h = self.height() - 2 * frame_margin
+        self.frame.setGeometry(frame_margin, frame_margin, frame_w, frame_h)
+        self.text_edit.setGeometry(0, title_bar_height, frame_w, frame_h - title_bar_height)
+
+    def help(self) -> None:
         info = QCoreApplication.translate("MainWindow", """Welcome to {name} {version}!
 Commands:
     echo     Output text to screen - echo <value>
@@ -173,19 +196,18 @@ Commands:
             version=self.version
         )
 
-        # 添加插件帮助信息
         info += self.plugin_loader.get_all_help()
-        Event.print(self, info)
+        self.print(info)
 
     def cd(self, dir_name: str = '.') -> None:
         try:
             if dir_name == '.':
-                Event.print(self, app_state.path)
+                self.print(app_state.path)
                 return
             if os.name == 'nt' and re.match(r'^[A-Za-z]:$', dir_name):
                 new_path = f"{dir_name}\\"
                 if not os.path.exists(new_path):
-                    Event.error(self, DIR_NOT_FOUND)
+                    self.error(DIR_NOT_FOUND)
                     return
                 os.chdir(new_path)
                 app_state.path = new_path
@@ -198,7 +220,7 @@ Commands:
                 new_path = os.path.abspath(os.path.join(app_state.path, dir_name))
 
             if not os.path.exists(new_path):
-                Event.error(self, DIR_NOT_FOUND)
+                self.error(DIR_NOT_FOUND)
                 return
 
             os.chdir(new_path)
@@ -206,36 +228,35 @@ Commands:
             app_state.entry = f"{app_state.path}> "
 
         except PermissionError:
-            Event.error(self, READONLY_FILE)
+            self.error(READONLY_FILE)
         except Exception as e:
-            Event.error(self, str(e))
+            self.error(str(e))
 
-    def mkdir(self, dir_name):
+    def mkdir(self, dir_name: str) -> None:
         try:
             full_path = os.path.join(app_state.path, dir_name)
-            # 检查目录是否已存在
             if os.path.exists(full_path):
-                Event.error(self, "目录已存在")
+                self.error("目录已存在")
                 return
             os.mkdir(full_path)
         except PermissionError:
-            Event.error(self, READONLY_FILE)
+            self.error(READONLY_FILE)
         except OSError as e:
-            if e.errno == 30:  # Read-only file system
-                Event.error(self, READONLY_FILE)
-            elif e.errno == 2:  # No such file or directory
-                Event.error(self, "路径无效")
-            elif e.errno == 13:  # Permission denied
-                Event.error(self, READONLY_FILE)
+            if e.errno == 30:
+                self.error(READONLY_FILE)
+            elif e.errno == 2:
+                self.error("路径无效")
+            elif e.errno == 13:
+                self.error(READONLY_FILE)
             else:
-                Event.error(self, f"创建目录失败: {str(e)}")
+                self.error(f"创建目录失败: {str(e)}")
         except Exception as e:
-            Event.error(self, str(e))
+            self.error(str(e))
 
-    def echo(self, *string):
-        Event.print(self, string, sep=" ")
+    def echo(self, *string: str) -> None:
+        self.print(string, sep=" ")
 
-    def remove(self, filename):
+    def remove(self, filename: str) -> None:
         try:
             filepath = os.path.join(app_state.path, filename)
             if not os.path.exists(filepath):
@@ -246,17 +267,16 @@ Commands:
             else:
                 os.rmdir(filepath)
         except FileNotFoundError:
-            Event.error(self, FILE_NOT_FOUND)
+            self.error(FILE_NOT_FOUND)
         except PermissionError:
-            Event.error(self, READONLY_FILE)
+            self.error(READONLY_FILE)
         except Exception as e:
-            Event.error(self, str(e))
+            self.error(str(e))
 
-    def ls(self):
-        Event.print(self, os.listdir(app_state.path), sep=" ")
+    def ls(self) -> None:
+        self.print(os.listdir(app_state.path), sep=" ")
 
-    def on_selection_changed(self):
-        # 如果文本编辑框中有选中文本，则禁用输入
+    def on_selection_changed(self) -> None:
         if self.text_edit.textCursor().hasSelection():
             self.text_edit.setReadOnly(True)
         else:
