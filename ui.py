@@ -12,6 +12,8 @@ from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QPushButton, QVBoxLayout, QDialog
 
+from utils.Utils import log
+
 
 os.environ["QT_SCALE_FACTOR"] = "1"
 
@@ -29,29 +31,23 @@ class Ui_MainWindow(object):
         self.settingsPage = None  # 添加这行
 
     def open_settings(self):
-        print("开始打开设置...")
+        log("INFO", "SettingsUI", "开始打开设置...")
         try:
             settings_dialog = QDialog(self)
-            print("设置对话框创建成功")
+            log("INFO", "SettingsUI", "设置对话框创建成功")
             settings_dialog.setWindowTitle("设置")
-            settings_dialog.setModal(True)  # 设置为模态对话框
+            settings_dialog.setModal(True)
 
-            # 创建布局
             layout = QVBoxLayout()
             settings_dialog.setLayout(layout)
 
-            # 添加一些设置选项（根据需要修改）
-            # 例如：添加一个按钮
             close_button = QPushButton("关闭")
             close_button.clicked.connect(settings_dialog.close)
             layout.addWidget(close_button)
 
-            # 显示对话框
             settings_dialog.exec_()
         except Exception as e:
-            print(f"错误详情: {str(e)}")
-            import traceback
-            print(traceback.format_exc())
+            log("ERROR", "SettingsUI", f"错误详情: {str(e)}")
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -133,6 +129,7 @@ class Ui_MainWindow(object):
 
         # 信号连接方式
         self.settingsButton.clicked.connect(self.open_settings)
+        self.pushButton_5.clicked.connect(lambda: self.togglePages())
 
         # 初始提示符
 
@@ -145,7 +142,7 @@ class Ui_MainWindow(object):
 
         MainWindow.setCentralWidget(self.centralwidget)
 
-    def togglePages(self, MainWindow):
+    def togglePages(self):
         """切换终端和设置页面"""
         if self.current_page == "terminal":
             self.settingsPage.show()
