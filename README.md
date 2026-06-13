@@ -1,4 +1,4 @@
-# 
+# Huki-terminal
 <div align="center">
     <h1 align="center"> Huki-terminal </h1>   
     <br>
@@ -36,7 +36,6 @@ A GUI terminal by Python3.
 - [Differences from python-cmd](#differences-from-python-cmd)
 - [Roadmap](#roadmap)
 - [Getting Started](#getting-started)
-- [Authors](#authors)
 
 ### Differences from [python-cmd](https://github.com/CodeCrafter-TL/python-cmd)
 - Faster update cycle
@@ -67,11 +66,6 @@ After installation is complete, use the following command to start using Huki cm
 ```bash
 python main.py
 ```
-
-### Authors
-![github](https://img.shields.io/badge/GitHub-Neamyoo-dev-green?logo=github)
-
-*You can also view all **developers** who participated in this project in the contributors list.*
 
 ### Copyright Notice
 This project is licensed under the GPL3.0 License - see [LICENSE.txt](https://github.com/Neamyoo-dev/Huki-terminal/LICENSE.txt) for details
