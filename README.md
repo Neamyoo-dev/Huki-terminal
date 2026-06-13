@@ -21,13 +21,13 @@ A GUI terminal by Python3.
     You can use it by following the information in the directory.
     <br>
     <br>
-    <a href="https://github.com/oneachina/Huki-terminal">View Repository</a>
+    <a href="https://github.com/Neamyoo-dev/Huki-terminal">View Repository</a>
     ·
-    <a href="https://github.com/oneachina/Huki-terminal/issues">Report Bug or Feature</a>
+    <a href="https://github.com/Neamyoo-dev/Huki-terminal/issues">Report Bug or Feature</a>
     ·
-    <a href="https://github.com/oneachina/Huki-terminal/pulls">Submit Pull Request</a>
+    <a href="https://github.com/Neamyoo-dev/Huki-terminal/pulls">Submit Pull Request</a>
     ·
-    <a href="https://github.com/oneachina/Huki-terminal/blob/main/README_ZH.md">Chinese Readme</a>
+    <a href="https://github.com/Neamyoo-dev/Huki-terminal/blob/main/README_ZH.md">Chinese Readme</a>
 </p>
 
 ## Table of Contents
@@ -51,11 +51,11 @@ A GUI terminal by Python3.
 - [x] Add logging
 
 ### Getting Started
-1. Download the latest [Release](https://github.com/oneachina/Huki/releases) from GitHub.
+1. Download the latest [Release](https://github.com/Neamyoo-dev/Huki/releases) from GitHub.
 
 2. Execute the following command in your working directory:
 ```bash
-git clone https://github.com/oneachina/Huki.git
+git clone https://github.com/Neamyoo-dev/Huki.git
 ```
 3. Installing Required Packages
 Execute the following command in your working directory after cloning:
@@ -69,23 +69,21 @@ python main.py
 ```
 
 ### Authors
-![github](https://img.shields.io/badge/GitHub-oneachina-green?logo=github)
-
-![github](https://img.shields.io/badge/GitHub-CodeCrafterTL-green?logo=github)
+![github](https://img.shields.io/badge/GitHub-Neamyoo-dev-green?logo=github)
 
 *You can also view all **developers** who participated in this project in the contributors list.*
 
 ### Copyright Notice
-This project is licensed under the GPL3.0 License - see [LICENSE.txt](https://github.com/oneachina/Huki-terminal/LICENSE.txt) for details
+This project is licensed under the GPL3.0 License - see [LICENSE.txt](https://github.com/Neamyoo-dev/Huki-terminal/LICENSE.txt) for details
 
-[project-path]:oneachina/Huki-terminal
-[contributors-shield]: https://img.shields.io/github/contributors/oneachina/Huki-terminal.svg?style=square
-[contributors-url]: https://github.com/oneachina/Huki-terminal/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/oneachina/Huki-terminal.svg?style=square
-[forks-url]: https://github.com/oneachina/Huki-terminal/network/members
-[stars-shield]: https://img.shields.io/github/stars/oneachina/Huki-terminal.svg?style=square
-[stars-url]: https://github.com/oneachina/Huki-terminal/stargazers
-[issues-shield]: https://img.shields.io/github/issues/oneachina/Huki-terminal.svg?style=square
-[issues-url]: https://img.shields.io/github/issues/oneachina/Huki-terminal.svg
-[license-shield]: https://img.shields.io/github/license/oneachina/Huki-terminal.svg?style=square
-[license-url]: https://github.com/oneachina/Huki-terminal/blob/master/LICENSE.txt
+[project-path]:Neamyoo-dev/Huki-terminal
+[contributors-shield]: https://img.shields.io/github/contributors/Neamyoo-dev/Huki-terminal.svg?style=square
+[contributors-url]: https://github.com/Neamyoo-dev/Huki-terminal/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/Neamyoo-dev/Huki-terminal.svg?style=square
+[forks-url]: https://github.com/Neamyoo-dev/Huki-terminal/network/members
+[stars-shield]: https://img.shields.io/github/stars/Neamyoo-dev/Huki-terminal.svg?style=square
+[stars-url]: https://github.com/Neamyoo-dev/Huki-terminal/stargazers
+[issues-shield]: https://img.shields.io/github/issues/Neamyoo-dev/Huki-terminal.svg?style=square
+[issues-url]: https://img.shields.io/github/issues/Neamyoo-dev/Huki-terminal.svg
+[license-shield]: https://img.shields.io/github/license/Neamyoo-dev/Huki-terminal.svg?style=square
+[license-url]: https://github.com/Neamyoo-dev/Huki-terminal/blob/master/LICENSE.txt
