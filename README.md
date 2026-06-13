@@ -1,7 +1,6 @@
 # Huki-terminal
+
 <div align="center">
-    <h1 align="center"> Huki-terminal </h1>   
-    <br>
     <img src="icons/logo.png" alt="Logo" width="120" height="120">
 </div>
 
