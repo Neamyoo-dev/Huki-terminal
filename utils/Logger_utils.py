@@ -12,9 +12,15 @@ def cleanup_logs(self):
     if os.path.getsize(self.log_file_path) > Config.log_file_max_size:
         self.archive_log()
 
+    if not self.log_file_path:
+        return
+
     log_folder = os.path.dirname(self.log_file_path)
-    log_files = [f for f in os.listdir(log_folder) if f.startswith("pcmd_log")]
-    log_files.sort(key=lambda x: os.path.getmtime(os.path.join(log_folder, x)))
+    log_files = [f for f in os.listdir(log_folder) if f.startswith("huki_log")]
+    if len(log_files) <= Config.log_file_max_count:
+        return
+
+    log_files.sort(key=lambda f: os.path.getmtime(os.path.join(log_folder, f)))
 
     while len(log_files) > Config.log_file_max_count:
         os.remove(os.path.join(log_folder, log_files.pop(0)))
