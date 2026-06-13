@@ -32,8 +32,6 @@ A GUI terminal by Python3.
 - [与python-cmd的区别](#与python-cmd的区别)
 - [计划](#计划)
 - [上手指南](#上手指南)
-- [文件说明](#文件说明)
-- [作者](#作者)
 
 ### 与[python-cmd](https://github.com/CodeCrafter-TL/python-cmd)的区别
 - 更快的更新速度
@@ -67,40 +65,6 @@ pip config set global.index-url https://mirrors.aliyun.com/pypi/simple
 ```bash
 python main.py
 ```
-
-### 文件说明
-
-```
-Huki-terminal-main
-├── Events
-│   ├── CustomPlainTextEdit.py
-│   └── Event.py
-├── Value
-│   ├── constants.py
-│   └── data.py
-|── utils
-│   ├── Logger_utils.py
-│   └── thread_utils.py
-├── README.md
-├── LICENSE.txt
-├── ui.py
-├── main.py
-```
-> `README.md`: 您正在阅读的帮助文档
-
-> `LICENSE.txt`: 关于此项目的 MIT License 信息
-
-> `ui.py`: 由 PyQt5 UI code generator 生成的 UI 代码
-
-> `main.py`: 主程序文件
-
-> `constants.py`: 必需的程序字符串信息
-
-### 作者
-
-![github](https://img.shields.io/badge/GitHub-Neamyoo-dev-green?logo=github)
-
-*您也可以在贡献者名单中参看所有**参与该项目的开发者**。*
 
 ### 版权说明
 
