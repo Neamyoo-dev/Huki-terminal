@@ -1,6 +1,4 @@
-<!-- Best_README_template -->
-
-# Huki terminal
+# Huki-terminal
 <div align="center">
   <img src="icons/logo.png" alt="Logo" width="120" height="120">
 </div>
@@ -21,11 +19,11 @@ A GUI terminal by Python3.
     您可以通过目录中的信息来使用它。
     <br />
     <br />
-    <a href="https://github.com/Neamyoo-dev/Huki">查看本仓库</a>
+    <a href="https://github.com/Neamyoo-dev/Huki-terminal">查看本仓库</a>
     ·
-    <a href="https://github.com/Neamyoo-dev/Huki/issues">报告 Bug 或提出特性</a>
+    <a href="https://github.com/Neamyoo-dev/Huki-terminal/issues">报告 Bug 或提出特性</a>
     ·
-    <a href="https://github.com/Neamyoo-dev/Huki/pulls">提出拉取请求</a>
+    <a href="https://github.com/Neamyoo-dev/Huki-terminal/pulls">提出拉取请求</a>
 </p>
 
 ## 目录
@@ -50,11 +48,11 @@ A GUI terminal by Python3.
 - [x] 添加日志
 
 ### 上手指南
-1. 在 GitHub 中下载最新的 [Release](https://github.com/Neamyoo-dev/Huki/releases) 。
+1. 在 GitHub 中下载最新的 [Release](https://github.com/Neamyoo-dev/Huki-terminal/releases) 。
 
 2. 在工作目录中执行如下命令:
 ```bash
-git clone https://github.com/Neamyoo-dev/Huki.git
+git clone https://github.com/Neamyoo-dev/Huki-terminal.git
 ```
 #### 安装必需包
 在 clone 之后的工作目录中执行如下命令:
@@ -65,7 +63,7 @@ pip install -r requirements.txt
 ```bash
 pip config set global.index-url https://mirrors.aliyun.com/pypi/simple
 ```
-等待安装完成后，使用如下命令即可开始使用 Huki cmd:
+等待安装完成后，使用如下命令即可开始使用 Huki-terminal cmd:
 ```bash
 python main.py
 ```
@@ -73,7 +71,7 @@ python main.py
 ### 文件说明
 
 ```
-Huki-main
+Huki-terminal-main
 ├── Events
 │   ├── CustomPlainTextEdit.py
 │   └── Event.py
@@ -106,15 +104,15 @@ Huki-main
 
 ### 版权说明
 
-该项目签署了MIT 授权许可，详情请参阅 [LICENSE.txt](https://github.com/Neamyoo-dev/Huki/LICENSE.txt)
+该项目签署了MIT 授权许可，详情请参阅 [LICENSE.txt](https://github.com/Neamyoo-dev/Huki-terminal/LICENSE.txt)
 
-[contributors-shield]: https://img.shields.io/github/contributors/Neamyoo-dev/Huki.svg?style=square
-[contributors-url]: https://github.com/Neamyoo-dev/Huki/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/Neamyoo-dev/Huki.svg?style=square
-[forks-url]: https://github.com/Neamyoo-dev/Huki/network/members
-[stars-shield]: https://img.shields.io/github/stars/Neamyoo-dev/Huki.svg?style=square
-[stars-url]: https://github.com/Neamyoo-dev/Huki/stargazers
-[issues-shield]: https://img.shields.io/github/issues/Neamyoo-dev/Huki.svg?style=square
-[issues-url]: https://img.shields.io/github/issues/Neamyoo-dev/Huki.svg
-[license-shield]: https://img.shields.io/github/license/Neamyoo-dev/Huki.svg?style=square
-[license-url]: https://github.com/Neamyoo-dev/Huki/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/Neamyoo-dev/Huki-terminal.svg?style=square
+[contributors-url]: https://github.com/Neamyoo-dev/Huki-terminal/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/Neamyoo-dev/Huki-terminal.svg?style=square
+[forks-url]: https://github.com/Neamyoo-dev/Huki-terminal/network/members
+[stars-shield]: https://img.shields.io/github/stars/Neamyoo-dev/Huki-terminal.svg?style=square
+[stars-url]: https://github.com/Neamyoo-dev/Huki-terminal/stargazers
+[issues-shield]: https://img.shields.io/github/issues/Neamyoo-dev/Huki-terminal.svg?style=square
+[issues-url]: https://img.shields.io/github/issues/Neamyoo-dev/Huki-terminal.svg
+[license-shield]: https://img.shields.io/github/license/Neamyoo-dev/Huki-terminal.svg?style=square
+[license-url]: https://github.com/Neamyoo-dev/Huki-terminal/blob/master/LICENSE.txt
