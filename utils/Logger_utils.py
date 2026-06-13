@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import json
 import os
 import time
@@ -5,56 +7,34 @@ import time
 from Value.data import Config
 
 
-def cleanup_logs(self):
-    if not self.log_file_path:
-        return
-
-    if os.path.getsize(self.log_file_path) > Config.log_file_max_size:
-        self.archive_log()
-
-    if not self.log_file_path:
-        return
-
-    log_folder = os.path.dirname(self.log_file_path)
-    log_files = [f for f in os.listdir(log_folder) if f.startswith("huki_log")]
-    if len(log_files) <= Config.log_file_max_count:
-        return
-
-    log_files.sort(key=lambda f: os.path.getmtime(os.path.join(log_folder, f)))
-
-    while len(log_files) > Config.log_file_max_count:
-        os.remove(os.path.join(log_folder, log_files.pop(0)))
-
-
-def create_config_file():
+def _get_config_paths() -> tuple[str, str, str]:
     user_folder = os.path.expanduser("~")
     config_folder = os.path.join(user_folder, ".huki")
     config_file = os.path.join(config_folder, "config.json")
+    return user_folder, config_folder, config_file
+
+
+def create_config_file() -> None:
+    _, config_folder, config_file = _get_config_paths()
 
     if not os.path.exists(config_folder):
         os.makedirs(config_folder)
 
     if not os.path.exists(config_file):
-        # 创建一个新的配置对象
         config_data = {"logging_enabled": True,
                        "log_file_max_size": 10240,
                        "log_file_max_age": 30,
-                       "log_file_max_count": 10,
-                       }
+                       "log_file_max_count": 10}
     else:
-        # 如果文件存在，读取文件内容
         with open(config_file, "r") as f:
             config_data = json.load(f)
 
-    # 将更新后的配置数据写回文件
     with open(config_file, "w") as f:
         json.dump(config_data, f, indent=4)
 
 
-def load_logging_settings():
-    user_folder = os.path.expanduser("~")
-    config_folder = os.path.join(user_folder, ".huki")
-    config_file = os.path.join(config_folder, "config.json")
+def load_logging_settings() -> None:
+    _, _, config_file = _get_config_paths()
 
     if os.path.exists(config_file):
         with open(config_file, "r") as f:
@@ -66,10 +46,8 @@ def load_logging_settings():
         Config.log_file_max_count = config_data.get("log_file_max_count", 10)
 
 
-def save_logging_settings():
-    user_folder = os.path.expanduser("~")
-    config_folder = os.path.join(user_folder, ".huki")
-    config_file = os.path.join(config_folder, "config.json")
+def save_logging_settings() -> None:
+    _, _, config_file = _get_config_paths()
 
     config_data = {
         "logging_enabled": Config.logging_enabled,
@@ -83,28 +61,24 @@ def save_logging_settings():
 
 
 class LoggerUtils:
-    def __init__(self):
-        self.log_file_path = None
+    def __init__(self) -> None:
+        self.log_file_path: str | None = None
 
-    def init_logging(self):
-        user_folder = os.path.expanduser("~")
-        config_folder = os.path.join(user_folder, ".huki")
-        config_file = os.path.join(config_folder, "config.json")
+    def init_logging(self) -> None:
+        _, config_folder, config_file = _get_config_paths()
 
         if not os.path.exists(config_folder):
             os.makedirs(config_folder)
 
         if not os.path.exists(config_file):
-            # 如果 config.json 不存在，创建一个默认的配置文件
             create_config_file()
 
         load_logging_settings()
 
-        # 设置日志文件路径为 config.json 所在的文件夹
         timestamp = time.strftime("%Y_%m_%d_%H_%M_%S")
         self.log_file_path = os.path.join(config_folder, f"huki_log_{timestamp}.txt")
 
-    def save_log(self, message):
+    def save_log(self, message: str) -> None:
         if not Config.logging_enabled:
             return
 
@@ -114,10 +88,31 @@ class LoggerUtils:
         with open(self.log_file_path, "a") as f:
             f.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')} - {message}\n")
 
-        # 检查日志文件大小并清理旧日志
-        cleanup_logs(self)
+        self._cleanup_logs()
 
-    def archive_log(self):
+    def _cleanup_logs(self) -> None:
+        log_file_path = getattr(self, 'log_file_path', None)
+        if not log_file_path:
+            return
+
+        if os.path.getsize(log_file_path) > Config.log_file_max_size:
+            self.archive_log()
+
+        log_file_path = getattr(self, 'log_file_path', None)
+        if not log_file_path:
+            return
+
+        log_folder = os.path.dirname(log_file_path)
+        log_files = [f for f in os.listdir(log_folder) if f.startswith("huki_log")]
+        if len(log_files) <= Config.log_file_max_count:
+            return
+
+        log_files.sort(key=lambda f: os.path.getmtime(os.path.join(log_folder, f)))
+
+        while len(log_files) > Config.log_file_max_count:
+            os.remove(os.path.join(log_folder, log_files.pop(0)))
+
+    def archive_log(self) -> None:
         if not self.log_file_path:
             return
 
