@@ -1,6 +1,6 @@
 <!-- Best_README_template -->
 
-# Huki cmd
+# Huki terminal
 <div align="center">
   <img src="icons/logo.png" alt="Logo" width="120" height="120">
 </div>
@@ -21,11 +21,11 @@ A GUI terminal by Python3.
     您可以通过目录中的信息来使用它。
     <br />
     <br />
-    <a href="https://github.com/oneachina/Huki">查看本仓库</a>
+    <a href="https://github.com/Neamyoo-dev/Huki">查看本仓库</a>
     ·
-    <a href="https://github.com/oneachina/Huki/issues">报告 Bug 或提出特性</a>
+    <a href="https://github.com/Neamyoo-dev/Huki/issues">报告 Bug 或提出特性</a>
     ·
-    <a href="https://github.com/oneachina/Huki/pulls">提出拉取请求</a>
+    <a href="https://github.com/Neamyoo-dev/Huki/pulls">提出拉取请求</a>
 </p>
 
 ## 目录
@@ -50,11 +50,11 @@ A GUI terminal by Python3.
 - [x] 添加日志
 
 ### 上手指南
-1. 在 GitHub 中下载最新的 [Release](https://github.com/oneachina/Huki/releases) 。
+1. 在 GitHub 中下载最新的 [Release](https://github.com/Neamyoo-dev/Huki/releases) 。
 
 2. 在工作目录中执行如下命令:
 ```bash
-git clone https://github.com/oneachina/Huki.git
+git clone https://github.com/Neamyoo-dev/Huki.git
 ```
 #### 安装必需包
 在 clone 之后的工作目录中执行如下命令:
@@ -100,23 +100,21 @@ Huki-main
 
 ### 作者
 
-![github](https://img.shields.io/badge/GitHub-oneachina-green?logo=github)
-
-![github](https://img.shields.io/badge/GitHub-CodeCrafterTL-green?logo=github)
+![github](https://img.shields.io/badge/GitHub-Neamyoo-dev-green?logo=github)
 
 *您也可以在贡献者名单中参看所有**参与该项目的开发者**。*
 
 ### 版权说明
 
-该项目签署了MIT 授权许可，详情请参阅 [LICENSE.txt](https://github.com/oneachina/Huki/LICENSE.txt)
+该项目签署了MIT 授权许可，详情请参阅 [LICENSE.txt](https://github.com/Neamyoo-dev/Huki/LICENSE.txt)
 
-[contributors-shield]: https://img.shields.io/github/contributors/oneachina/Huki.svg?style=square
-[contributors-url]: https://github.com/oneachina/Huki/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/oneachina/Huki.svg?style=square
-[forks-url]: https://github.com/oneachina/Huki/network/members
-[stars-shield]: https://img.shields.io/github/stars/oneachina/Huki.svg?style=square
-[stars-url]: https://github.com/oneachina/Huki/stargazers
-[issues-shield]: https://img.shields.io/github/issues/oneachina/Huki.svg?style=square
-[issues-url]: https://img.shields.io/github/issues/oneachina/Huki.svg
-[license-shield]: https://img.shields.io/github/license/oneachina/Huki.svg?style=square
-[license-url]: https://github.com/oneachina/Huki/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/Neamyoo-dev/Huki.svg?style=square
+[contributors-url]: https://github.com/Neamyoo-dev/Huki/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/Neamyoo-dev/Huki.svg?style=square
+[forks-url]: https://github.com/Neamyoo-dev/Huki/network/members
+[stars-shield]: https://img.shields.io/github/stars/Neamyoo-dev/Huki.svg?style=square
+[stars-url]: https://github.com/Neamyoo-dev/Huki/stargazers
+[issues-shield]: https://img.shields.io/github/issues/Neamyoo-dev/Huki.svg?style=square
+[issues-url]: https://img.shields.io/github/issues/Neamyoo-dev/Huki.svg
+[license-shield]: https://img.shields.io/github/license/Neamyoo-dev/Huki.svg?style=square
+[license-url]: https://github.com/Neamyoo-dev/Huki/blob/master/LICENSE.txt
