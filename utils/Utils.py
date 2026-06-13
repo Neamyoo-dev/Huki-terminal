@@ -1,5 +1,6 @@
 import os
 import stat
+import time
 
 
 def in_path(program_name):
@@ -21,6 +22,12 @@ def in_path(program_name):
                 if os.path.isfile(full_path):
                     return True
     return False
+
+
+def log(log_type: str, module: str, message: str):
+    timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
+    print(f"[{timestamp}] [Huki/{log_type}] [{module}] {message}")
+
 
 class Utils:
     def __init__(self):
