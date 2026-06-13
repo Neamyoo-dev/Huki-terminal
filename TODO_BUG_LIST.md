@@ -171,11 +171,11 @@ Huki-terminal/
 
 ### 🔴 必须修复（优先级最高）
 
-- [ ] **FIX-B1**: 重写 [Utils.py](file:///c:/Users/ruiru/.trae/worktrees/Huki-terminal/feat-analyze-project-refactor-5OJk7L/utils/Utils.py) 的 `in_path()` 函数
-- [ ] **FIX-B2**: 修复 [Logger_utils.py](file:///c:/Users/ruiru/.trae/worktrees/Huki-terminal/feat-analyze-project-refactor-5OJk7L/utils/Logger_utils.py) 的 `archive_log()`，重命名后更新 `self.log_file_path`
-- [ ] **FIX-B3**: 重写 [CustomPlainTextEdit.py](file:///c:/Users/ruiru/.trae/worktrees/Huki-terminal/feat-analyze-project-refactor-5OJk7L/Events/CustomPlainTextEdit.py) 的退格键处理，使用 `QTextCursor` 操作而非全量重绘
-- [ ] **FIX-B4**: 重写 [CustomPlainTextEdit.py](file:///c:/Users/ruiru/.trae/worktrees/Huki-terminal/feat-analyze-project-refactor-5OJk7L/Events/CustomPlainTextEdit.py) 的回车键处理，移除全量重绘
-- [ ] **FIX-B5**: 实现或删除 [thread_utils.py](file:///c:/Users/ruiru/.trae/worktrees/Huki-terminal/feat-analyze-project-refactor-5OJk7L/utils/thread_utils.py) 的 `_read_output()`（赋值 `self._process` 或移除该方法）
+- [x] **FIX-B1**: 重写 [Utils.py](file:///c:/Users/ruiru/.trae/worktrees/Huki-terminal/feat-analyze-project-refactor-5OJk7L/utils/Utils.py) 的 `in_path()` 函数
+- [x] **FIX-B2**: 修复 [Logger_utils.py](file:///c:/Users/ruiru/.trae/worktrees/Huki-terminal/feat-analyze-project-refactor-5OJk7L/utils/Logger_utils.py) 的 `archive_log()`，重命名后更新 `self.log_file_path`
+- [x] **FIX-B3**: 重写 [CustomPlainTextEdit.py](file:///c:/Users/ruiru/.trae/worktrees/Huki-terminal/feat-analyze-project-refactor-5OJk7L/Events/CustomPlainTextEdit.py) 的退格键处理，使用 `QTextCursor` 操作而非全量重绘
+- [x] **FIX-B4**: 重写 [CustomPlainTextEdit.py](file:///c:/Users/ruiru/.trae/worktrees/Huki-terminal/feat-analyze-project-refactor-5OJk7L/Events/CustomPlainTextEdit.py) 的回车键处理，移除全量重绘
+- [x] **FIX-B5**: 删除 [thread_utils.py](file:///c:/Users/ruiru/.trae/worktrees/Huki-terminal/feat-analyze-project-refactor-5OJk7L/utils/thread_utils.py) 的 `_read_output()` 死代码方法
 
 ### 🟠 重要修复
 
