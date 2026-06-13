@@ -8,32 +8,26 @@ from PyQt5.QtWidgets import QMainWindow, QApplication
 
 from Events.Event import *
 from Value.constants import *
-from Value.data import *
+from Value.data import COMMANDS, Config, app_state
 from plugin_loader import PluginLoader
 from ui import Ui_MainWindow
 from utils.Logger_utils import *
 from utils.Utils import *
 from utils.thread_utils import *
 
-path = os.path.splitdrive(os.path.abspath(os.sep))[
+app_state.path = os.path.splitdrive(os.path.abspath(os.sep))[
            0] + '\\' if os.name == 'nt' else os.path.abspath(os.sep)
-os.chdir(path)
-CONFIG = {
-    "color": ["white", str],
-    "name": ["Huki terminal", str],
-    "version": [1.0, float],
-}
-color = CONFIG["color"][0]
-entry = f"{path}> "
+os.chdir(app_state.path)
+app_state.entry = f"{app_state.path}> "
 
 
 def _is_system_command(command):
-    return in_path(command) or os.path.isfile(os.path.join(path, command))
+    return in_path(command) or os.path.isfile(os.path.join(app_state.path, command))
 
 
 class MainForm(QMainWindow, Ui_MainWindow):
-    name = CONFIG["name"][0]
-    version = CONFIG["version"][0]
+    name = Config.name
+    version = Config.version
     welcome = f"{name} {version}\n{ \
         LICENSE}\nType 'help' to view help information.\n"
 
@@ -63,7 +57,7 @@ class MainForm(QMainWindow, Ui_MainWindow):
         self.text_edit.setObjectName("plainTextEdit")
 
         Event.print(self, self.welcome)
-        Event.print(self, entry, end="")
+        Event.print(self, app_state.entry, end="")
 
         self.text_edit.selectionChanged.connect(self.on_selection_changed)
 
@@ -80,19 +74,19 @@ class MainForm(QMainWindow, Ui_MainWindow):
 
     def process_command(self, line_text):
         if not line_text:
-            Event.print(self, entry, end="")
+            Event.print(self, app_state.entry, end="")
             return
 
         parts = line_text.split('>')
         command_part = parts[-1].strip()
 
         if not command_part:
-            Event.print(self, entry, end="")
+            Event.print(self, app_state.entry, end="")
             return
 
         command_parts = command_part.split()
         if not command_parts:
-            Event.print(self, entry, end="")
+            Event.print(self, app_state.entry, end="")
             return
 
         command = command_parts[0]
@@ -111,7 +105,7 @@ class MainForm(QMainWindow, Ui_MainWindow):
             Event.error(self, ["\n", USET_ABORT])
             sys.exit()
         finally:
-            Event.print(self, entry, end="")
+            Event.print(self, app_state.entry, end="")
 
     def _execute_command(self, command, args):
         method_name = COMMANDS[command]
@@ -184,10 +178,9 @@ Commands:
         Event.print(self, info)
 
     def cd(self, dir_name: str = '.') -> None:
-        global path, entry
         try:
             if dir_name == '.':
-                Event.print(self, path)
+                Event.print(self, app_state.path)
                 return
             if os.name == 'nt' and re.match(r'^[A-Za-z]:$', dir_name):
                 new_path = f"{dir_name}\\"
@@ -195,22 +188,22 @@ Commands:
                     Event.error(self, DIR_NOT_FOUND)
                     return
                 os.chdir(new_path)
-                path = new_path
-                entry = f"{path}> "
+                app_state.path = new_path
+                app_state.entry = f"{app_state.path}> "
                 return
 
             if dir_name == '..':
-                new_path = os.path.dirname(path)
+                new_path = os.path.dirname(app_state.path)
             else:
-                new_path = os.path.abspath(os.path.join(path, dir_name))
+                new_path = os.path.abspath(os.path.join(app_state.path, dir_name))
 
             if not os.path.exists(new_path):
                 Event.error(self, DIR_NOT_FOUND)
                 return
 
             os.chdir(new_path)
-            path = new_path
-            entry = f"{path}> "
+            app_state.path = new_path
+            app_state.entry = f"{app_state.path}> "
 
         except PermissionError:
             Event.error(self, READONLY_FILE)
@@ -219,7 +212,7 @@ Commands:
 
     def mkdir(self, dir_name):
         try:
-            full_path = os.path.join(path, dir_name)
+            full_path = os.path.join(app_state.path, dir_name)
             # 检查目录是否已存在
             if os.path.exists(full_path):
                 Event.error(self, "目录已存在")
@@ -244,7 +237,7 @@ Commands:
 
     def remove(self, filename):
         try:
-            filepath = os.path.join(path, filename)
+            filepath = os.path.join(app_state.path, filename)
             if not os.path.exists(filepath):
                 raise FileNotFoundError
 
@@ -260,7 +253,7 @@ Commands:
             Event.error(self, str(e))
 
     def ls(self):
-        Event.print(self, os.listdir(path), sep=" ")
+        Event.print(self, os.listdir(app_state.path), sep=" ")
 
     def on_selection_changed(self):
         # 如果文本编辑框中有选中文本，则禁用输入

@@ -1,7 +1,7 @@
 from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtCore import Qt
 
-from main import entry
+from Value.data import app_state
 
 
 class CustomPlainTextEdit(QtWidgets.QPlainTextEdit):
@@ -37,7 +37,7 @@ class CustomPlainTextEdit(QtWidgets.QPlainTextEdit):
             elif event.key() == Qt.Key_Return or event.key() == Qt.Key_Enter:
                 last_newline = all_text.rfind('\n')
                 current_line = all_text[last_newline + 1:] if last_newline >= 0 else all_text
-                command_text = current_line.replace(entry, "", 1).strip()
+                command_text = current_line.replace(app_state.entry, "", 1).strip()
                 self.parent().parent().parent().process_command(command_text)
 
                 output_text = self.toPlainText()

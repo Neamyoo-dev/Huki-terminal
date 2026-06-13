@@ -1,16 +1,25 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+import os
 
 
 @dataclass
 class Config:
     color: str = "white"
-    name: str = "Huki"
+    name: str = "Huki terminal"
     version: float = 1.0
-    # 日志记录设置
-    logging_enabled: bool = True  # 默认开启日志记录
-    log_file_max_size: int = 10240  # 默认日志文件最大大小为10KB
-    log_file_max_age: int = 30  # 默认日志文件保留时间为30天
-    log_file_max_count: int = 10  # 默认日志文件保留数量为10
+    logging_enabled: bool = True
+    log_file_max_size: int = 10240
+    log_file_max_age: int = 30
+    log_file_max_count: int = 10
+
+
+@dataclass
+class AppState:
+    path: str = ""
+    entry: str = ""
+
+
+app_state = AppState()
 
 COMMANDS = {
         "exit": "exit",
