@@ -28,7 +28,7 @@ entry = f"{path}> "
 
 
 def _is_system_command(command):
-    return in_path(path, command) or os.path.isfile(os.path.join(path, command))
+    return in_path(command) or os.path.isfile(os.path.join(path, command))
 
 
 class MainForm(QMainWindow, Ui_MainWindow):
