@@ -1,5 +1,3 @@
-from typing import Any
-
 from PyQt5 import QtCore
 
 from Events.CustomPlainTextEdit import *
@@ -18,7 +16,7 @@ class Event(Ui_MainWindow):
                                      "border-radius:13px;}")
         self.text_edit.setObjectName("plainTextEdit")
 
-    def warning(self, info: tuple[str]):
+    def warning(self, info: str | list | tuple):
         cursor = self.text_edit.textCursor()
         cursor.movePosition(QtGui.QTextCursor.End)
 
@@ -31,7 +29,7 @@ class Event(Ui_MainWindow):
         cursor.setCharFormat(QtGui.QTextCharFormat())
         self.text_edit.setTextCursor(cursor)
 
-    def info(self, info: tuple[str]):
+    def info(self, info: str | list | tuple):
         cursor = self.text_edit.textCursor()
         cursor.movePosition(QtGui.QTextCursor.End)
 
@@ -44,7 +42,7 @@ class Event(Ui_MainWindow):
         cursor.setCharFormat(QtGui.QTextCharFormat())
         self.text_edit.setTextCursor(cursor)
 
-    def error(self, info: list[str | Any] | tuple[str] | str | Exception):
+    def error(self, info: str | list | tuple | Exception):
         cursor = self.text_edit.textCursor()
         cursor.movePosition(QtGui.QTextCursor.End)
 
@@ -55,10 +53,11 @@ class Event(Ui_MainWindow):
         if isinstance(info, (list, tuple)):
             cursor.insertText("\n" + "".join(info))
         else:
-            cursor.insertText("\n" + info)
+            cursor.insertText("\n" + str(info))
 
         cursor.setCharFormat(QtGui.QTextCharFormat())
         self.text_edit.setTextCursor(cursor)
 
-    def print(self, value: tuple[str] | str | list[str] | tuple[Any, ...], sep="", end=""):
-        self.text_edit.appendPlainText(sep.join(value) + end)
+    def print(self, value: str | list | tuple, sep="", end=""):
+        text = sep.join(value) if isinstance(value, (list, tuple)) else str(value)
+        self.text_edit.appendPlainText(text + end)
