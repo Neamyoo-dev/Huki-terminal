@@ -16,4 +16,4 @@ class ThreadUtils(QThread):
             m, s = divmod(self.time_number, 60)
             h, m = divmod(m, 60)
             self.trigger.emit(str("%02d:%02d:%02d" % (h, m, s)))
-            time.sleep(0.01)
+            time.sleep(1)
