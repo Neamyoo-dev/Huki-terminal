@@ -1,8 +1,6 @@
 from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtCore import Qt
 
-from main import entry
-
 
 class CustomPlainTextEdit(QtWidgets.QPlainTextEdit):
     now_plain = None
@@ -15,14 +13,17 @@ class CustomPlainTextEdit(QtWidgets.QPlainTextEdit):
             all_text = self.toPlainText()
 
             if event.key() == Qt.Key_Backspace:
-                if cursor_pos < self.welcome_length:
-                    event.ignore()
-                    return
+                if cursor_pos <= self.welcome_length:
+                    if not cursor.hasSelection():
+                        event.ignore()
+                        return
+                    sel_start = min(cursor.selectionStart(), cursor.selectionEnd())
+                    if sel_start < self.welcome_length:
+                        event.ignore()
+                        return
+                super().keyPressEvent(event)
+                return
 
-                self.clear()
-                self.appendPlainText(all_text[:-1])
-
-            # 处理方向键
             elif event.key() in (Qt.Key_Left, Qt.Key_Right, Qt.Key_Up, Qt.Key_Down):
                 if cursor_pos <= self.welcome_length:
                     event.ignore()
@@ -32,18 +33,13 @@ class CustomPlainTextEdit(QtWidgets.QPlainTextEdit):
                     return
 
             elif event.key() == Qt.Key_Return or event.key() == Qt.Key_Enter:
-                cursor.movePosition(QtGui.QTextCursor.StartOfLine)
-                cursor.select(QtGui.QTextCursor.LineUnderCursor)
-                line_text = cursor.selectedText().strip()
-
-                self.clear()
-                self.appendPlainText(all_text)
-                self.parent().parent().parent().process_command(line_text.replace(entry, ""))
+                command_text = all_text[self.welcome_length:].strip()
+                self.parent().parent().parent().process_command(command_text)
 
                 output_text = self.toPlainText()
                 output_length = len(output_text)
                 cursor = self.textCursor()
-                cursor.setPosition(output_length)
+                cursor.movePosition(QtGui.QTextCursor.End)
                 self.setTextCursor(cursor)
                 self.welcome_length = output_length + 1
 
