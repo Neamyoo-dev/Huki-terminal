@@ -179,23 +179,23 @@ Huki-terminal/
 
 ### 🟠 重要修复
 
-- [ ] **FIX-B6**: [thread_utils.py](file:///c:/Users/ruiru/.trae/worktrees/Huki-terminal/feat-analyze-project-refactor-5OJk7L/utils/thread_utils.py) 将 `time.sleep(0.01)` 改为 `time.sleep(1)`
-- [ ] **FIX-B9**: [plugin_loader.py](file:///c:/Users/ruiru/.trae/worktrees/Huki-terminal/feat-analyze-project-refactor-5OJk7L/plugin_loader.py) 改进插件类名推导机制
-- [ ] **FIX-B10**: [plugin_loader.py](file:///c:/Users/ruiru/.trae/worktrees/Huki-terminal/feat-analyze-project-refactor-5OJk7L/plugin_loader.py) 修复异常处理中 `plugin_name` 可能未定义的问题
+- [x] **FIX-B6**: [thread_utils.py](file:///c:/Users/ruiru/.trae/worktrees/Huki-terminal/feat-analyze-project-refactor-5OJk7L/utils/thread_utils.py) 将 `time.sleep(0.01)` 改为 `time.sleep(1)`
+- [x] **FIX-B9**: [plugin_loader.py](file:///c:/Users/ruiru/.trae/worktrees/Huki-terminal/feat-analyze-project-refactor-5OJk7L/plugin_loader.py) 改进插件类名推导机制
+- [x] **FIX-B10**: [plugin_loader.py](file:///c:/Users/ruiru/.trae/worktrees/Huki-terminal/feat-analyze-project-refactor-5OJk7L/plugin_loader.py) 修复异常处理中 `plugin_name` 可能未定义的问题
 
 ### 🟡 常规修复
 
-- [ ] **FIX-B11**: [Event.py](file:///c:/Users/ruiru/.trae/worktrees/Huki-terminal/feat-analyze-project-refactor-5OJk7L/Events/Event.py) 修正类型注解
-- [ ] **FIX-B12**: 统一两套配置系统
-- [ ] **FIX-B13**: 封装全局状态为 `Session` 对象
-- [ ] **FIX-B15**: 修复 `togglePages()` 未连接信号的问题
+- [x] **FIX-B11**: [Event.py](file:///c:/Users/ruiru/.trae/worktrees/Huki-terminal/feat-analyze-project-refactor-5OJk7L/Events/Event.py) 修正类型注解
+- [x] **FIX-B12**: 统一两套配置系统
+- [x] **FIX-B13**: 封装全局状态为 `AppState` 对象
+- [x] **FIX-B15**: 修复 `togglePages()` 未连接信号的问题
 
 ### ⚡ 性能优化
 
-- [ ] **PERF-B6**: 计时器线程优化（同 FIX-B6）
-- [ ] **PERF-B3/B4**: 文本编辑退格/回车操作优化（同 FIX-B3/FIX-B4）
-- [ ] **PERF-LOG**: 日志清理排序操作缓存优化
-- [ ] **PERF-LOAD**: 移除不必要的 `print()` 调试输出
+- [x] **PERF-B6**: 计时器线程优化（同 FIX-B6）
+- [x] **PERF-B3/B4**: 文本编辑退格/回车操作优化（同 FIX-B3/FIX-B4）
+- [x] **PERF-LOG**: 日志清理排序操作缓存优化
+- [x] **PERF-LOAD**: 移除不必要的 `print()` 调试输出，替换为统一日志输出
 
 ### 🔧 重构任务
 
