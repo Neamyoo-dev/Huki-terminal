@@ -1,6 +1,8 @@
 from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtCore import Qt
 
+from main import entry
+
 
 class CustomPlainTextEdit(QtWidgets.QPlainTextEdit):
     now_plain = None
@@ -33,7 +35,9 @@ class CustomPlainTextEdit(QtWidgets.QPlainTextEdit):
                     return
 
             elif event.key() == Qt.Key_Return or event.key() == Qt.Key_Enter:
-                command_text = all_text[self.welcome_length:].strip()
+                last_newline = all_text.rfind('\n')
+                current_line = all_text[last_newline + 1:] if last_newline >= 0 else all_text
+                command_text = current_line.replace(entry, "", 1).strip()
                 self.parent().parent().parent().process_command(command_text)
 
                 output_text = self.toPlainText()
@@ -41,7 +45,7 @@ class CustomPlainTextEdit(QtWidgets.QPlainTextEdit):
                 cursor = self.textCursor()
                 cursor.movePosition(QtGui.QTextCursor.End)
                 self.setTextCursor(cursor)
-                self.welcome_length = output_length + 1
+                self.welcome_length = output_length
 
                 self.now_plain = self.toPlainText()
                 event.ignore()
