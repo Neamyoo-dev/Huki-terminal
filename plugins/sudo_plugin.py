@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import ctypes
+import locale
 import os
 import subprocess
 import tempfile
@@ -101,7 +102,8 @@ class SudoPlugin:
                 self._run_elevated_await("cmd.exe", f'/c "{helper_file}"')
 
                 if os.path.exists(result_file):
-                    with open(result_file, "r", encoding="utf-8", errors="replace") as f:
+                    system_encoding = locale.getpreferredencoding(do_setlocale=False)
+                    with open(result_file, "r", encoding=system_encoding, errors="replace") as f:
                         output = f.read().strip()
                     return output if output else "(command completed with no output)"
 
