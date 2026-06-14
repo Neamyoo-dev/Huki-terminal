@@ -60,6 +60,34 @@ def save_logging_settings() -> None:
         json.dump(config_data, f, indent=4)
 
 
+def _cleanup_logs_file(log_file_path: str) -> None:
+    if not log_file_path or not os.path.exists(log_file_path):
+        return
+
+    log_folder = os.path.dirname(log_file_path)
+    log_files = [f for f in os.listdir(log_folder) if f.startswith("huki_log")]
+    if len(log_files) <= Config.log_file_max_count:
+        return
+
+    log_files.sort(key=lambda f: os.path.getmtime(os.path.join(log_folder, f)))
+    while len(log_files) > Config.log_file_max_count:
+        os.remove(os.path.join(log_folder, log_files.pop(0)))
+
+
+def _archive_log_file(log_file_path: str) -> str | None:
+    if not log_file_path:
+        return None
+
+    log_folder = os.path.dirname(log_file_path)
+    log_file_base = os.path.basename(log_file_path)
+    log_file_name, log_file_ext = os.path.splitext(log_file_base)
+    archive_file_name = f"{log_file_name}_{time.strftime('%Y%m%d%H%M%S')}{log_file_ext}"
+    archive_file_path = os.path.join(log_folder, archive_file_name)
+
+    os.rename(log_file_path, archive_file_path)
+    return archive_file_path
+
+
 class LoggerUtils:
     def __init__(self) -> None:
         self.log_file_path: str | None = None
@@ -77,50 +105,34 @@ class LoggerUtils:
 
         timestamp = time.strftime("%Y_%m_%d_%H_%M_%S")
         self.log_file_path = os.path.join(config_folder, f"huki_log_{timestamp}.txt")
+        if not os.path.exists(self.log_file_path):
+            with open(self.log_file_path, "w") as f:
+                pass
 
     def save_log(self, message: str) -> None:
         if not Config.logging_enabled:
             return
 
-        if not self.log_file_path:
+        log_file_path = getattr(self, 'log_file_path', None)
+        if not log_file_path:
             self.init_logging()
 
-        with open(self.log_file_path, "a") as f:
-            f.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')} - {message}\n")
-
-        self._cleanup_logs()
-
-    def _cleanup_logs(self) -> None:
         log_file_path = getattr(self, 'log_file_path', None)
         if not log_file_path:
             return
 
         if os.path.getsize(log_file_path) > Config.log_file_max_size:
-            self.archive_log()
+            _archive_log_file(log_file_path)
+            self.init_logging()
+            log_file_path = getattr(self, 'log_file_path', None)
+            if not log_file_path:
+                return
 
-        log_file_path = getattr(self, 'log_file_path', None)
-        if not log_file_path:
-            return
+        with open(log_file_path, "a") as f:
+            f.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')} - {message}\n")
 
-        log_folder = os.path.dirname(log_file_path)
-        log_files = [f for f in os.listdir(log_folder) if f.startswith("huki_log")]
-        if len(log_files) <= Config.log_file_max_count:
-            return
-
-        log_files.sort(key=lambda f: os.path.getmtime(os.path.join(log_folder, f)))
-
-        while len(log_files) > Config.log_file_max_count:
-            os.remove(os.path.join(log_folder, log_files.pop(0)))
+        _cleanup_logs_file(log_file_path)
 
     def archive_log(self) -> None:
-        if not self.log_file_path:
-            return
-
-        log_folder = os.path.dirname(self.log_file_path)
-        log_file_base = os.path.basename(self.log_file_path)
-        log_file_name, log_file_ext = os.path.splitext(log_file_base)
-        archive_file_name = f"{log_file_name}_{time.strftime('%Y%m%d%H%M%S')}{log_file_ext}"
-        archive_file_path = os.path.join(log_folder, archive_file_name)
-
-        os.rename(self.log_file_path, archive_file_path)
+        _archive_log_file(self.log_file_path)
         self.log_file_path = None

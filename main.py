@@ -3,7 +3,7 @@ from __future__ import annotations
 import re
 import sys
 
-from PyQt5.QtCore import QLocale, Qt
+from PyQt5.QtCore import QLocale, Qt, QRect
 from PyQt5.QtCore import QCoreApplication
 from PyQt5.QtWidgets import QMainWindow, QApplication
 
@@ -51,7 +51,7 @@ class MainForm(QMainWindow, Ui_MainWindow, EventMixin):
 
         self.text_edit = CustomPlainTextEdit(self.frame)
 
-        self.text_edit.setGeometry(QtCore.QRect(0, 50, 1521, 671))
+        self.text_edit.setGeometry(QRect(0, 50, 1521, 671))
         self.text_edit.setStyleSheet("QPlainTextEdit#plainTextEdit"
                                      "{background-color: rgb(12, 12, 12);font: 13pt \"Cascadia Code\";color:rgb(255, "
                                      "255, 255);"
